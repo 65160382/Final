@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตะกร้าสินค้า</title>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb" id="breadcrumb">
+            <a href="/">Home</a>
+            <span>/</span>
+            <% if (products.length > 0) { %>
+                <!-- ดึงชื่อสินค้าและใส่ลิงก์ไปยังหน้ารายละเอียดสินค้า -->
+                <a href="/product/<%= products[0].product_id %>"><%= products[0].name %></a>
+                <span>/</span>
+            <% } %>
+            <a href="/getchart">chart</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>รูปสินค้า</th>
+                    <th>สินค้า</th>
+                    <th>ราคา/หน่วย</th>
+                    <th>จำนวน</th>
+                    <th>จำนวนเงินรวม</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach(function(product) { %>
+                <tr>
+                    <td><img src="<%= product.image %>" alt="<%= product.name %>" class="product-image"></td>
+                    <td><%= product.name %></td>
+                    <td data-price="<%= product.price %>"><%= product.price.toFixed(2) %></td>
+                    <td><input type="text" value="<%= product.quantity %>" class="quantity-input" data-id="<%= product.product_id %>"></td>
+                    <td class="total-price"><%= (product.price * product.quantity).toFixed(2) %></td>
+                    <td>
+                        <form action="/delete-from-cart" method="POST">
+                            <input type="hidden" name="productId" value="<%= product.product_id %>">
+                            <button type="submit" class="btn btn-danger">ลบทิ้ง</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <div class="total">
+            จำนวนเงินรวมทั้งหมด <span id="totalPrice"><%= totalPrice %></span> บาท
+        </div>
+        
+        <div class="action-buttons">
+            <form action="/order" method="post">
+                <input type="hidden" name="totalPrice" value="<%= totalPrice %>"> <!-- เก็บราคาสุทธิ -->
+                <button type="submit" class="btn btn-success">สั่งซื้อสินค้า</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %></title>
+</head>
+<body>
+    <diV class="product-detail">
+        <img src="<%= product.image %>" alt="<%= product.name %>">
+        <div class="details">
+            <h1><%= product.name %></h1>
+                <p class="price">Price: <%= product.price %></p>
+                <p class="description"><%= product.description %></p>
+                <p class="stock">Stock: <%= product.stock %></p>
+        </div>
+
+        <div class="quantity-selector">
+            <label for="quantity">Quantity</label>
+            <button  id="decrease" onclick="updateQuantity(-1)">-</button>
+            <input type="text" id="quantity" value="1" readonly>
+            <button id="increase" onclick="updateQuantity(1)">+</button>
+        </div>
+
+        <div class="button-group">
+            <form action="/chart" method="post">
+                <input type="hidden" name="productId" value="<%= product.id %>">
+                <input type="hidden" name="quantity" id="order-quantity" value="1">
+                <button type="submit">add to chart</button>
+            </form>
+        </div>
+    </diV>
+</body>
+<script>
+    function updateQuantity(change) {
+    // ดึงค่า element ของ input ที่ใช้แสดงจำนวนปัจจุบัน
+    let quantityInput = document.getElementById('quantity');
+    let orderQuantityInput = document.getElementById('order-quantity');
+
+    // แปลงค่าจำนวนปัจจุบันที่อยู่ใน input ให้เป็นตัวเลข
+    let currentQuantity = parseInt(quantityInput.value);
+
+    // คำนวณจำนวนใหม่โดยเพิ่มหรือลดตามค่าที่ส่งมาใน 'change'
+    let newQuantity = currentQuantity + change;
+
+    // ตรวจสอบว่าจำนวนใหม่ต้องไม่ต่ำกว่า 1
+    if (newQuantity >= 1) {
+        // อัปเดตค่าจำนวนใหม่ใน input สำหรับแสดงผล
+        quantityInput.value = newQuantity;
+        // อัปเดตค่าจำนวนใหม่ใน input ที่จะส่งไปกับฟอร์ม
+        orderQuantityInput.value = newQuantity;
+    }
+}
+</script>
+</html>

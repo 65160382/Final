@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce</title>
+</head>
+<body>
+    <a href="/getchart">chart</a>
+    <a href="/login">Login</a>
+    <a href="/logout">Logout</a>
+    <div class="product-container">
+        <% products.forEach(product => { %>
+            <div class="Discover-item">
+                <h3 class="text"><%= product.name %></h3>
+                <a href="/product/<%= product.id %>">
+                    <img src="<%= product.image %>" alt="<%= product.name %>">
+                </a>
+                <p class="price">Price: <%= product.price %></p>
+                <form action="/product/<%= product.id %>" method="get">
+                    <button type="submit">view</button>
+                </form>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>
